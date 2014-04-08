@@ -18,7 +18,7 @@ Therefore, a board was needed that would be absolutely tiny and far more lightwe
 Current software
 ================
 
-The current v1.0 software is the initial commit for this project and has not yet been 100% tested. The software currently transmits 50 baud interrupt driven RTTY but is soon to hopefully support interrupt driven DominoEx, and MSFK mode.
+The current v1.0 software is the initial commit for this project and has not yet been 100% tested. The software currently transmits 300 baud interrupt driven RTTY but is soon to hopefully support interrupt driven DominoEx, and MSFK mode. The baud rate can be set to any desired value by modifying the BAUD_RATE value at the top of the main script.
 
 
 For more information, be sure to visit:

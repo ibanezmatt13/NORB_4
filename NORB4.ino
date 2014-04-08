@@ -7,6 +7,8 @@
 #define dataPin A4     
 #define clockPin A5
 
+#define BAUD_RATE 300
+
 SHT1x sht1x(dataPin, clockPin); 
 
 int counter = 0; // sentence id
@@ -276,7 +278,7 @@ void initialise_interrupt()
   cli();          // disable global interrupts
   TCCR1A = 0;     // set entire TCCR1A register to 0
   TCCR1B = 0;     // same for TCCR1B
-  OCR1A = F_CPU / 1024 / 49;  // set compare match register to desired timer count for 50 baud RTTY:
+  OCR1A = F_CPU / 1024 / (BAUD_RATE - 1);  // set compare match register to desired timer count
   TCCR1B |= (1 << WGM12);   // turn on CTC mode:
   // Set CS10 and CS12 bits for:
   TCCR1B |= (1 << CS10);

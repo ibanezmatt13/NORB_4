@@ -32,9 +32,9 @@ ISR(TIMER1_COMPA_vect){
   switch (tx_status){
     
     case 0: // when the next byte needs to be gotten
-      if (ptr){ // if the pointer is valid
-	currentbyte = *ptr;
-        if (currentbyte){ // if there exists a byte at the pointer
+      if (ptr){
+	currentbyte = *ptr; // read first byte where pointer is pointing too
+        if (currentbyte){
           tx_status = 1;
           sentence_needed = false;
           digitalWrite(LED_1, LOW);
@@ -58,12 +58,8 @@ ISR(TIMER1_COMPA_vect){
       break;
 			
     case 2: // normal status, transmitting bits of byte (including first and last)
-      if (currentbyte & 1){
-        rtty_txbit(1);
-      }
-      else {
-	rtty_txbit(0);
-      }
+      
+      rtty_txbit(currentbyte & 1); // send the currentb bit
 			
       if (currentbitcount == 7){ // if we've just transmitted the final bit of the byte
         tx_status = 3;
@@ -89,12 +85,10 @@ ISR(TIMER1_COMPA_vect){
 }
 
 
- 
+// function to toggle radio pin high and low as per the bit
 void rtty_txbit (int bit)
 {
   digitalWrite(RADIOPIN, bit);
-  //digitalWrite(LED_2, bit);
-  //digitalWrite(LED_1, bit);                      
 }  
 
  
@@ -123,7 +117,7 @@ int check_latitude(char* latitude, char* ind, float* new_latitude)
   }
 }
  
-
+// simple function to ensure that dtostrf() works when latitude is -ve
 char *ltrim(char *string) { return(*string == ' ' ? string + 1 : string); }
 
 
@@ -199,7 +193,7 @@ int parse_NMEA(char* mystring, int flightmode)
   
  
   // split NMEA string into individual data fields and check that a certain number of values have been obtained
-  // $GPGGA,212748.000,5056.6505,N,00124.3531,W,2,07,1.8,102.1,M,47.6,M,0.8,0000*6B
+  // eg: $GPGGA,212748.000,5056.6505,N,00124.3531,W,2,07,1.8,102.1,M,47.6,M,0.8,0000*6B
   if (sscanf(mystring, "%6[^,],%11[^,],%11[^,],%1[^,],%11[^,],%1[^,],%d,%d,%*[^,],%9[^,]", identifier, time, latitude, north_south, longitude, east_west, &lock, &satellites, altitude) == 9)
   {
     // check for the identifer being invalid
@@ -282,7 +276,7 @@ void initialise_interrupt()
   cli();          // disable global interrupts
   TCCR1A = 0;     // set entire TCCR1A register to 0
   TCCR1B = 0;     // same for TCCR1B
-  OCR1A = F_CPU / 1024 / 49;  // set compare match register to desired timer count:
+  OCR1A = F_CPU / 1024 / 49;  // set compare match register to desired timer count for 50 baud RTTY:
   TCCR1B |= (1 << WGM12);   // turn on CTC mode:
   // Set CS10 and CS12 bits for:
   TCCR1B |= (1 << CS10);
@@ -393,7 +387,6 @@ void setup()
   pinMode(RADIOPIN, OUTPUT);
   pinMode(LED_1, OUTPUT);
   pinMode(LED_2, OUTPUT);
-  pinMode(10, OUTPUT); // needed for SD library
   setupGPS();
   initialise_interrupt();
 }

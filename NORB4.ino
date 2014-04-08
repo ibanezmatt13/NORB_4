@@ -27,10 +27,8 @@ uint8_t setNav[] = {
 
 
 
+// Interrupt routine for 50 baud RTTY
 ISR(TIMER1_COMPA_vect){
-	
-  
-  
   switch (tx_status){
     
     case 0: // when the next byte needs to be gotten

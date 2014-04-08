@@ -29,7 +29,7 @@ uint8_t setNav[] = {
 
 
 
-// Interrupt routine for 50 baud RTTY
+// RTTY Interrupt Routine
 ISR(TIMER1_COMPA_vect){
   switch (tx_status){
     

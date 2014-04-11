@@ -1,5 +1,8 @@
 #include <util/crc16.h>
 #include <SHT1x.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <SPI.h>
 
 #ifdef DOMINOEX
 #include "dominoexvaricode.h"

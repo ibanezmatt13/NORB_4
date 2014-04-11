@@ -12,8 +12,8 @@
 SHT1x sht1x(dataPin, clockPin); 
 
 int counter = 0; // sentence id
-int tx_status = 0;
-char *ptr = NULL;
+volatile int tx_status = 0;
+volatile char *ptr = NULL;
 char currentbyte;
 int currentbitcount;
 

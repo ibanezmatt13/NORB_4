@@ -11,7 +11,7 @@
 #define dataPin A4     
 #define clockPin A5
 
-#define BAUD_RATE 50
+#define BAUD_RATE 50 // change as required
 
 SHT1x sht1x(dataPin, clockPin); 
 

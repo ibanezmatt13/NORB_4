@@ -1,13 +1,17 @@
 #include <util/crc16.h>
 #include <SHT1x.h>
 
+#ifdef DOMINOEX
+#include "dominoexvaricode.h"
+#endif
+
 #define RADIOPIN 9
 #define LED_1 5
 #define LED_2 6  
 #define dataPin A4     
 #define clockPin A5
 
-#define BAUD_RATE 300
+#define BAUD_RATE 50
 
 SHT1x sht1x(dataPin, clockPin); 
 
